@@ -1,1 +1,2 @@
-
+-> Add project description
+->List technologies used
