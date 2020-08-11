@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var Campground = require("../models/campground");
 var middleware = require("../middleware");
+var Comment = require("../models/comment");
 
 //CREATE  - add new campground to database
 router.post("/", middleware.isLoggedIn, function (req, res) {
@@ -82,11 +83,17 @@ router.put("/:id", middleware.checkCampgroundOwnership, function (req, res) {
 
 //DESTROY
 router.delete("/:id", middleware.checkCampgroundOwnership, function (req, res) {
-   Campground.findByIdAndRemove(req.params.id, function (err) {
+   Campground.findByIdAndRemove(req.params.id, function (err, campgroundRemoved) {
       if (err) {
          res.redirect("/campgrounds");
       } else {
-         res.redirect("/campgrounds");
+         Comment.deleteMany({ _id: { $in: campgroundRemoved.comments } }, function (err) {
+            if (err) {
+               res.redirect("/campgrounds");
+            } else {
+               res.redirect("/campgrounds");
+            }
+         });
       }
    });
 });
