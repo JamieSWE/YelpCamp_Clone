@@ -15,16 +15,15 @@ var commentRoutes = require("./routes/comments"),
    campgroundRoutes = require("./routes/campgrounds"),
    indexRoutes = require("./routes/index");
 
+   require("dotenv/config");
 
 //mongoose.connect("mongodb://localhost:27017/yelp_camp", { useNewUrlParser: true });
-mongoose.connect("mongodb+srv://yp_dev:test1234@cluster0.fcvjw.mongodb.net/yelp_camp?retryWrites=true&w=majority",
+mongoose.connect(process.env.DATABASE_URI,
 {useNewUrlParser:true,useCreateIndex:true}).then(()=>{
     console.log("Connected to DB!");
 }).catch(err => {
    console.log("ERROR: ", err.message)
  });
-//mongodb+srv://jamie:<password>@cluster0.fcvjw.mongodb.net/<dbname>?retryWrites=true&w=majority
-//mongodb+srv://jamie:<password>@cluster0.fcvjw.mongodb.net/<dbname>?retryWrites=true&w=majority
 //mongoose.connect("mongodb://localhost/yelp_camp");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
